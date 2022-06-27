@@ -1,13 +1,18 @@
 body{
     display: flex;
-    flex-direction: column;
-    width: 500px;
-    height: 700px;
-    margin-left: 30vh;
+    margin-left: 30vw;
     margin-right: 30vh;
     margin-top: 20vh;
     margin-bottom: 20vh;
 }
+
+.calculatorBody{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 700px;
+}
+
 
 .calculatorCalculateBox{
     display:flex;
