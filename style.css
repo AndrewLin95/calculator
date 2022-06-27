@@ -14,7 +14,7 @@ body{
 }
 
 
-.calculatorCalculateBox{
+#calculatorCalculateBox{
     display:flex;
     align-items: flex-end;
     justify-content: end;
@@ -23,7 +23,7 @@ body{
     font-size: 125%;
 }
 
-.calculatorOutputBox{
+#calculatorOutputBox{
     display:flex;
     align-items: flex-end;
     justify-content: end;
