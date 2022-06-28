@@ -25,33 +25,33 @@ const displayOutputValue = () => {
 const additionFunction = () => {                                                           
     if (initialValueCheck == true){
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);      // stores the evaluation of the memory value and the new value with the previous memory operand (which is addition)        
-        memoryOperand = '+';                                                    // adds the addition operand to memory which wil be used to calculate the value whenever any other operand is pressed. ADDED AFTER calculations are made.
-        displayFunctionChange();
     }
+    memoryOperand = '+';                                                    // adds the addition operand to memory which wil be used to calculate the value whenever any other operand is pressed. ADDED AFTER calculations are made.
+    displayFunctionChange();
 }
 
 const subtractionFunction = () => {
     if (initialValueCheck == true){
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);
-        memoryOperand = '-';  
-        displayFunctionChange();
     }
+    memoryOperand = '-';  
+    displayFunctionChange();
 }
 
 const multiplyFunction = () => {
     if (initialValueCheck == true){
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);
-        memoryOperand = '*';  
-        displayFunctionChange();
     }
+    memoryOperand = '*';  
+    displayFunctionChange();
 }
 
 const divideFunction = () => {
     if (initialValueCheck == true){
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);
-        memoryOperand = '/';  
-        displayFunctionChange();
     }
+    memoryOperand = '/';  
+    displayFunctionChange();
 }
 
 const displayFunctionChange = () => {
