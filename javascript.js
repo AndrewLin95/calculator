@@ -154,6 +154,17 @@ numberModifyPress.forEach(numModifyPress => {
                 bottomBox.textContent = currentOutputValue;
                 flip = false;
             }
+        } else if (numModifyPress.id == 'clear'){
+            currentInputValue = '';
+            currentOutputValue = '';
+            memoryValue = '';
+            memoryOperand = '';
+            newValue = '';
+            bottomBox.textContent = '';
+            topBox.textContent = '';
+        } else if (numModifyPress.id = 'delete'){
+            currentOutputValue = currentOutputValue.slice(0, -1);
+            bottomBox.textContent = currentOutputValue;
         }
     })
 })
