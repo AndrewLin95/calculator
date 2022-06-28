@@ -10,6 +10,7 @@ let memoryOperand = '';
 
 let initialValueCheck = false;
 let initialOperandCheck = false;
+let equalCheck = false;
 
 /*  Outputs the string of the values inputted to the bottom text display and stores the value in currentOutputValue */
 
@@ -41,7 +42,7 @@ const multiplyFunction = () => {
     let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
     memoryOperand = '*';  
     memoryValue = newValue;                                                 
-    topBox.textContent = newValue + ' x';                                  
+    topBox.textContent = newValue + ' *';                                  
     bottomBox.textContent = newValue;
     currentOutputValue = '';
 }
@@ -53,6 +54,15 @@ const divideFunction = () => {
     topBox.textContent = newValue + ' /';                                  
     bottomBox.textContent = newValue;
     currentOutputValue = '';
+}
+
+const equalFunction = () => {
+    let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    memoryValue = newValue;                                                     // lets the resulting value be used to start a new value
+    memoryOperand = '';                                                         // resets operand memory because no new calculations are made.
+    currentOutputValue = '';                                                    
+    equalCheck = false;                                                         // prevents equal from being pressed again until another operand is pressed
+    bottomBox.textContent = newValue;                              
 }
 
 /*  An event listener for each number button is created which returns the id (which is set to the value of the button).
@@ -83,16 +93,25 @@ numberOperandPress.forEach(numberFuncPress => {
 
         if (numberFuncPress.id == 'add' && initialOperandCheck == true){    // triggers when the add button is specifically pressed
             topBox.textContent = memoryValue + " +";                        // adds " +" to the top display box to signify which operand has been pressed
+            equalCheck = true;
             additionFunction();
         } else if (numberFuncPress.id == 'subtract' && initialOperandCheck == true){
             topBox.textContent = memoryValue + " -"; 
+            equalCheck = true;
             subtractionFunction();
         } else if (numberFuncPress.id == 'multiply' && initialOperandCheck == true){
-            topBox.textContent = memoryValue + " x"; 
+            topBox.textContent = memoryValue + " *"; 
+            equalCheck = true;
             multiplyFunction();
         } else if (numberFuncPress.id == 'divide' && initialOperandCheck == true){
-            topBox.textContent = memoryValue + " +"
+            topBox.textContent = memoryValue + " +";
+            equalCheck = true;
             divideFunction();
+        } else if (numberFuncPress.id == 'equal' && initialOperandCheck == true && equalCheck == true){
+            topBox.textContent = memoryValue + ' ' + memoryOperand + ' ' + currentOutputValue + " ="
+            equalFunction();
+        } else {
+            return;
         }
     })
 })
