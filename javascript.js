@@ -21,9 +21,36 @@ const displayOutputValue = () => {
  
 const additionFunction = () => {                                                           
     let newValue = eval(memoryValue + memoryOperand + currentOutputValue);  // stores the evaluation of the memory value and the new value with the previous memory operand (which is addition)        
-    console.log(newValue);
+    memoryOperand = '+';                                                    // adds the addition operand to memory which wil be used to calculate the value whenever any other operand is pressed. ADDED AFTER calculations are made.
     memoryValue = newValue;                                                 // saves the calculated value to be used in furthur calculations
     topBox.textContent = newValue + ' +';                                   // below code displays the initial steps for more actions
+    bottomBox.textContent = newValue;
+    currentOutputValue = '';
+}
+
+const subtractionFunction = () => {
+    let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    memoryOperand = '-';  
+    memoryValue = newValue;                                                 
+    topBox.textContent = newValue + ' -';                                  
+    bottomBox.textContent = newValue;
+    currentOutputValue = '';
+}
+
+const multiplyFunction = () => {
+    let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    memoryOperand = '*';  
+    memoryValue = newValue;                                                 
+    topBox.textContent = newValue + ' x';                                  
+    bottomBox.textContent = newValue;
+    currentOutputValue = '';
+}
+
+const divideFunction = () => {
+    let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    memoryOperand = '/';  
+    memoryValue = newValue;                                                 
+    topBox.textContent = newValue + ' /';                                  
     bottomBox.textContent = newValue;
     currentOutputValue = '';
 }
@@ -55,11 +82,17 @@ numberOperandPress.forEach(numberFuncPress => {
         }
 
         if (numberFuncPress.id == 'add' && initialOperandCheck == true){    // triggers when the add button is specifically pressed
-            memoryOperand = '+';                                            // adds the addition operand to memory which wil be used to calculate the value whenever any other operand is pressed
             topBox.textContent = memoryValue + " +";                        // adds " +" to the top display box to signify which operand has been pressed
             additionFunction();
-        } else {
-            return;
+        } else if (numberFuncPress.id == 'subtract' && initialOperandCheck == true){
+            topBox.textContent = memoryValue + " -"; 
+            subtractionFunction();
+        } else if (numberFuncPress.id == 'multiply' && initialOperandCheck == true){
+            topBox.textContent = memoryValue + " x"; 
+            multiplyFunction();
+        } else if (numberFuncPress.id == 'divide' && initialOperandCheck == true){
+            topBox.textContent = memoryValue + " +"
+            divideFunction();
         }
     })
 })
