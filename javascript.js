@@ -10,6 +10,7 @@ let memoryValue = '';
 let memoryOperand = '';
 let newValue = '';
 
+let flip = false;
 let initialValueCheck = false;
 let initialOperandCheck = false;
 let equalCheck = false;
@@ -22,17 +23,32 @@ const displayOutputValue = () => {
     bottomBox.textContent = currentOutputValue;
 }
  
+/*  the if statement is mandatory within each function because:
+        1) the memoryOperand and displayFunctionChange function needs to be after the eval().
+            - if the memoryOperand change is done before, the previous calculation would not work (it would always add if additionFunc was ran)
+            - displayFunctionChange appends the calculated value from newValue and appends it. It must come after.
+        2) if the check is false, it skips the eval and changes the existing function to a new function (ie. subtract to add)
+*/
+
 const additionFunction = () => {                                                           
-    if (initialValueCheck == true){
+    if (initialValueCheck == true){                                             
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);      // stores the evaluation of the memory value and the new value with the previous memory operand (which is addition)        
     }
     memoryOperand = '+';                                                    // adds the addition operand to memory which wil be used to calculate the value whenever any other operand is pressed. ADDED AFTER calculations are made.
     displayFunctionChange();
 }
 
+/*  the extra if clause checks if the sign of the currentoutput is negative or not (if amended by the minusPlus function). 
+    If it is negative and we are subtracting, we remove the negative and pass it through the addition function.  
+*/
+
 const subtractionFunction = () => {
-    if (initialValueCheck == true){
+    if (initialValueCheck == true && Math.sign(currentOutputValue) >= 0){
         newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    } else if (initialValueCheck == true && Math.sign(currentOutputValue) < 0){
+        currentOutputValue = currentOutputValue.slice(1);
+        memoryOperand = '+';
+        additionFunction();
     }
     memoryOperand = '-';  
     displayFunctionChange();
@@ -62,12 +78,12 @@ const displayFunctionChange = () => {
 }
 
 const equalFunction = () => {
-    let newValue = eval(memoryValue + memoryOperand + currentOutputValue);
+    newValue = eval(memoryValue + memoryOperand + currentOutputValue);
     topBox.textContent = memoryValue + ' ' + memoryOperand + ' ' + currentOutputValue + " ="
     memoryValue = newValue;                                                     // lets the resulting value be used to start a new value
     memoryOperand = '';                                                         // resets operand memory because no new calculations are made.                                                   
     currentOutputValue = '';
-    equalCheck = false;                                                         // prevents equal from being pressed again until another operand is pressed
+    equalCheck = true;                                                         // prevents equal from being pressed again until another operand is pressed
     newInputCheck = true;
     bottomBox.textContent = newValue;                              
 }
@@ -82,8 +98,8 @@ numberClusterPress.forEach(numberButtonPress => {
             initialValueCheck = true;
             displayOutputValue();
         } else if (numberButtonPress.className == 'waves-effect blue-grey lighten-5 btn-flat btnCluster btnNum' && newInputCheck == true) {
-            memoryValue = '';                                                           // resets memory so value cannot be added to it
-            topBox.textContent = '';                                                    // resets the top box
+            memoryValue = '';                                                           // resets everything if numbers are pressed after equal is pressed
+            topBox.textContent = '';                                                    
             currentInputValue = numberButtonPress.id;
             initialValueCheck = true;
             displayOutputValue();
@@ -96,8 +112,8 @@ numberClusterPress.forEach(numberButtonPress => {
 numberOperandPress.forEach(numberFuncPress => {
     numberFuncPress.addEventListener('click', () => {
         newInputCheck = false;
-        equalCheck = true;
-        if (initialValueCheck == true && initialOperandCheck == false){     
+        flip = false;
+        if (initialValueCheck == true && initialOperandCheck == false && equalCheck == false){     
             initialOperandCheck = true;                                     // Sets the initialOperandCheck to true which allows for the specific function buttons to be operable
             memoryValue = currentOutputValue;                               // the below code sets the inital displays to show the general numbers                     
             bottomBox.textContent = currentOutputValue;
@@ -129,8 +145,15 @@ numberOperandPress.forEach(numberFuncPress => {
 numberModifyPress.forEach(numModifyPress => {
     numModifyPress.addEventListener('click', () => {
         if (numModifyPress.id == 'plusMinus' && initialValueCheck == true){
-            currentOutputValue = "-" + currentOutputValue;
-            bottomBox.textContent = currentOutputValue;
+            if (flip == false){
+                currentOutputValue = "-" + currentOutputValue;
+                bottomBox.textContent = currentOutputValue;
+                flip = true;
+            } else if (flip == true){
+                currentOutputValue = currentOutputValue.slice(1);
+                bottomBox.textContent = currentOutputValue;
+                flip = false;
+            }
         }
     })
 })
