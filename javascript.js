@@ -2,12 +2,14 @@ const topTextBox = document.querySelector('#calculatorCalculateBox');
 const bottomTextBox = document.querySelector('#calculatorOutputBox');
 const numInput = document.querySelectorAll('.btnNum');
 const calculationInput = document.querySelectorAll('.btnFunc');
+const modifyInput = document.querySelectorAll('.btnModify');
 
 let calcArray = [];
 let lastElement = '';
 let displayString = '';
 let currentValue = '';
 let results = 0;
+let flip = false;
 
 const bottomDisplayFunc = () => {
     displayString += currentValue;
@@ -64,5 +66,29 @@ calculationInput.forEach(calculatePress => {                                    
             calcArray.push(calculatePress.id);
         }
         displayString = '';
+    })
+})
+
+modifyInput.forEach(modifyPress => {
+    modifyPress.addEventListener('click', () => {
+        if (modifyPress.id === 'delete'){
+            displayString = displayString.slice(0, -1);
+            bottomTextBox.textContent = displayString;
+        } else if (modifyPress.id === 'clear'){
+            calcArray = [];
+            displayString = '';
+            bottomTextBox.textContent = '';
+            topTextBox.textContent = '';
+        } else if (modifyPress.id === 'plusMinus'){
+            if (flip == false){
+                displayString = "-" + displayString;
+                bottomTextBox.textContent = displayString;
+                flip = true;
+            } else if (flip == true){
+                displayString = displayString.slice(1);
+                bottomTextBox.textContent = displayString;
+                flip = false;
+            }
+        }
     })
 })
