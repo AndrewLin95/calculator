@@ -9,7 +9,7 @@ let currentValue = '';              // if empty = will return false, if filled, 
 let valueOne = '';
 let valueTwo = '';
 let operator = '';
-let flip = false;
+let toggle = false;
 
 const bottomDisplayFunc = (value) => {
     currentValue += value;                              // can shorten to one line?
@@ -25,6 +25,7 @@ numInput.forEach(buttonPress => {
 function operate(operator, a, b){
     let aVal = parseInt(a);
     let bVal = parseInt(b);
+    console.log(bVal);
     switch (operator){
         case "+":
             valueOne = aVal + bVal;
@@ -33,9 +34,9 @@ function operate(operator, a, b){
             valueOne = aVal - bVal;
             break;
         case '/':
-            if (b === '0'){
-                bottomTextBox.textContent = "Error!";   
-                //clear function    
+            if (bVal === 0){
+                clearFunction();
+                valueOne = 'Error!';
                 return;
             } 
             valueOne = aVal / bVal;
@@ -73,12 +74,12 @@ modifyInput.forEach(modifyPress => {
         } else if (modifyPress.id === 'clear'){
             clearFunction();
         } else if (modifyPress.id === 'plusMinus'){
-            if (!flip){
+            if (!toggle){
                 currentValue = "-" + currentValue;
-                flip = !flip;
+                toggle = !toggle;
             } else{
                 currentValue = currentValue.slice(1);
-                flip = !flip;
+                toggle = !toggle;
             }
             bottomTextBox.textContent = currentValue;
         }
@@ -87,6 +88,7 @@ modifyInput.forEach(modifyPress => {
 
 funcInput.forEach(funcPress => {
     funcPress.addEventListener('click', () => {
+        toggle = false;
         if (!operator && currentValue){
             valueOne = currentValue;
         } else if (valueOne && currentValue){
