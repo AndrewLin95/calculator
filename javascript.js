@@ -23,8 +23,9 @@ numInput.forEach(buttonPress => {
 })
 
 function operate(operator, a, b){
-    let aVal = parseInt(a);
-    let bVal = parseInt(b);
+    let aVal = parseFloat(a).toFixed(3);
+    let bVal = parseFloat(b).toFixed(3);
+    console.log(aVal);
     console.log(bVal);
     switch (operator){
         case "+":
@@ -70,9 +71,9 @@ modifyInput.forEach(modifyPress => {
     modifyPress.addEventListener('click', () => {
         if (modifyPress.id === 'delete'){
             currentValue = currentValue.slice(0, -1);
-            bottomTextBox.textContent = currentValue;
         } else if (modifyPress.id === 'clear'){
             clearFunction();
+            return;
         } else if (modifyPress.id === 'plusMinus'){
             if (!toggle){
                 currentValue = "-" + currentValue;
@@ -81,8 +82,10 @@ modifyInput.forEach(modifyPress => {
                 currentValue = currentValue.slice(1);
                 toggle = !toggle;
             }
-            bottomTextBox.textContent = currentValue;
-        }
+        } else if (modifyPress.id === 'dot'){                       // NEED TO MAKE SURE YOU CAN'T DO MORE THAN ONE DOT. AND ROUND OUTPUT. INPUT IS OKAY I THINK
+            currentValue += ".";
+        } 
+        bottomTextBox.textContent = currentValue;
     })
 })
 
