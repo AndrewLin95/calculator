@@ -3,12 +3,12 @@ const bottomTextBox = document.querySelector('#calculatorOutputBox');
 const numInput = document.querySelectorAll('.btnNum');
 const funcInput = document.querySelectorAll('.btnFunc');
 const modifyInput = document.querySelectorAll('.btnModify');
+const equalInput = document.querySelector('.btnEqual');
 
 let currentValue = '';              // if empty = will return false, if filled, will return true
 let valueOne = '';
 let valueTwo = '';
 let operator = '';
-let operator2 = '';
 
 const bottomDisplayFunc = (value) => {
     currentValue += value;
@@ -20,28 +20,6 @@ numInput.forEach(buttonPress => {
         bottomDisplayFunc(buttonPress.id);
     })
 })
-
-funcInput.forEach(funcPress => {
-    funcPress.addEventListener('click', () => {
-        if (!operator && currentValue){
-            valueOne = currentValue;
-            operator = funcPress.id;
-            topTextBox.textContent = `${valueOne} ${operator}`;
-            currentValue = '';
-        } else if (valueOne && currentValue){
-            valueTwo = currentValue;
-            operate(operator, valueOne, valueTwo);
-            operator = funcPress.id;
-            topTextBox.textContent = `${valueOne} ${operator}`;
-            bottomTextBox.textContent = valueOne;
-            currentValue = '';
-        } else if (valueOne && !currentValue){
-            operator = funcPress.id;
-            topTextBox.textContent = `${valueOne} ${operator}`;
-        }
-    })
-})
-
 
 function operate(operator, a, b){
     let aVal = parseInt(a);
@@ -68,3 +46,37 @@ function operate(operator, a, b){
     }
 
 }
+
+equalInput.addEventListener('click', () => {
+    if (valueOne && currentValue){
+        valueTwo = currentValue;
+        topTextBox.textContent = `${valueOne} ${operator} ${valueTwo} =`
+        operate(operator, valueOne, valueTwo);
+        bottomTextBox.textContent = valueOne;
+        currentValue = '';
+    }
+})
+
+
+funcInput.forEach(funcPress => {
+    funcPress.addEventListener('click', () => {
+        if (!operator && currentValue){
+            valueOne = currentValue;
+            operator = funcPress.id;
+            topTextBox.textContent = `${valueOne} ${operator}`;
+            currentValue = '';
+        } else if (valueOne && currentValue){
+            valueTwo = currentValue;
+            operate(operator, valueOne, valueTwo);
+            operator = funcPress.id;
+            topTextBox.textContent = `${valueOne} ${operator}`;
+            bottomTextBox.textContent = valueOne;
+            currentValue = '';
+        } else if (valueOne && !currentValue){                      // runs if no values were inputted after an operator was selector (changes the operator)
+            operator = funcPress.id;
+            topTextBox.textContent = `${valueOne} ${operator}`;
+        }
+    })
+})
+
+
