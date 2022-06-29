@@ -33,7 +33,7 @@ function operate(operator, a, b){
             valueOne = aVal - bVal;
             break;
         case '/':
-            if (b === 0){
+            if (b === '0'){
                 bottomTextBox.textContent = "Error!";   
                 //clear function    
                 return;
@@ -44,7 +44,6 @@ function operate(operator, a, b){
             valueOne = aVal * bVal;
             break;
     }
-
 }
 
 equalInput.addEventListener('click', () => {
