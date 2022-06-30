@@ -5,11 +5,12 @@ const funcInput = document.querySelectorAll('.btnFunc');
 const modifyInput = document.querySelectorAll('.btnModify');
 const equalInput = document.querySelector('.btnEqual');
 
-let currentValue = '';              // if empty = will return false, if filled, will return true
+let currentValue = '';              
 let valueOne = '';
 let valueTwo = '';
 let operator = '';
 let toggle = false;
+let dotToggle = true;
 
 const bottomDisplayFunc = (value) => {
     currentValue += value;                              // can shorten to one line?
@@ -23,10 +24,8 @@ numInput.forEach(buttonPress => {
 })
 
 function operate(operator, a, b){
-    let aVal = parseFloat(a).toFixed(3);
-    let bVal = parseFloat(b).toFixed(3);
-    console.log(aVal);
-    console.log(bVal);
+    let aVal = Number(a);
+    let bVal = Number(b);
     switch (operator){
         case "+":
             valueOne = aVal + bVal;
@@ -46,6 +45,7 @@ function operate(operator, a, b){
             valueOne = aVal * bVal;
             break;
     }
+    valueOne = +valueOne.toFixed(3);
 }
 
 function clearFunction(){
@@ -59,11 +59,12 @@ function clearFunction(){
 
 equalInput.addEventListener('click', () => {
     if (valueOne && currentValue){
-        valueTwo = currentValue;
-        topTextBox.textContent = `${valueOne} ${operator} ${valueTwo} =`
-        operate(operator, valueOne, valueTwo);
+        topTextBox.textContent = `${valueOne} ${operator} ${currentValue} =`
+        operate(operator, valueOne, currentValue);
         bottomTextBox.textContent = valueOne;
+        operator = '';
         currentValue = '';
+        toggle = false;
     }
 })
 
@@ -82,7 +83,8 @@ modifyInput.forEach(modifyPress => {
                 currentValue = currentValue.slice(1);
                 toggle = !toggle;
             }
-        } else if (modifyPress.id === 'dot'){                       // NEED TO MAKE SURE YOU CAN'T DO MORE THAN ONE DOT. AND ROUND OUTPUT. INPUT IS OKAY I THINK
+        } else if (modifyPress.id === 'dot' && dotToggle){            
+            dotToggle = false;
             currentValue += ".";
         } 
         bottomTextBox.textContent = currentValue;
@@ -92,6 +94,7 @@ modifyInput.forEach(modifyPress => {
 funcInput.forEach(funcPress => {
     funcPress.addEventListener('click', () => {
         toggle = false;
+        dotToggle = true;
         if (!operator && currentValue){
             valueOne = currentValue;
         } else if (valueOne && currentValue){
