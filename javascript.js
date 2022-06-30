@@ -4,6 +4,7 @@ const numInput = document.querySelectorAll('.btnNum');
 const funcInput = document.querySelectorAll('.btnFunc');
 const modifyInput = document.querySelectorAll('.btnModify');
 const equalInput = document.querySelector('.btnEqual');
+const body = document.querySelector('body');
 
 let currentValue = '';              
 let valueOne = '';
@@ -57,7 +58,7 @@ function clearFunction(){
     topTextBox.textContent = '';
 }
 
-equalInput.addEventListener('click', () => {
+const equalFunction = () => {
     if (valueOne && currentValue){
         topTextBox.textContent = `${valueOne} ${operator} ${currentValue} =`
         operate(operator, valueOne, currentValue);
@@ -66,7 +67,7 @@ equalInput.addEventListener('click', () => {
         currentValue = '';
         toggle = false;
     }
-})
+}
 
 modifyInput.forEach(modifyPress => {
     modifyPress.addEventListener('click', () => {
@@ -108,4 +109,10 @@ funcInput.forEach(funcPress => {
     })
 })
 
+equalInput.addEventListener('click', equalFunction);
 
+body.addEventListener('keydown', (e) => {
+    console.log(e.key);
+    if (e.key >= 0 && e.key <= 9) bottomDisplayFunc(e.key);
+    if (e.key === '=' || e.key === 'Enter') equalFunction();
+})
