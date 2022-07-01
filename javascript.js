@@ -74,7 +74,7 @@ function clearFunction(){
 }
 
 const equalFunction = () => {
-    if (valueOne && currentValue){
+    if (valueOne && currentValue && operator){
         topTextBox.textContent = `${valueOne} ${operator} ${currentValue} =`
         operate(operator, valueOne, currentValue);
         bottomTextBox.textContent = valueOne;
@@ -93,11 +93,10 @@ const modifyFunction = (buttonID) => {
     } else if (buttonID === 'plusMinus'){
         if (!toggle){
             currentValue = "-" + currentValue;
-            toggle = !toggle;
         } else{
             currentValue = currentValue.slice(1);
-            toggle = !toggle;
         }
+        toggle = !toggle;
     } else if (buttonID === '.' && dotToggle){            
         dotToggle = false;
         currentValue += ".";
@@ -117,7 +116,7 @@ funcInput.forEach(funcPress => {
 
 equalInput.addEventListener('click', equalFunction);
 
-body.addEventListener('keydown', (e) => {                                           // add rest of keyboard support. update CSS. need to convert the other eventlisteners to individual functions
+body.addEventListener('keydown', (e) => {  
     console.log(e.key);
     if (e.key >= 0 && e.key <= 9) bottomDisplayFunc(e.key);
     if (e.key === '=' || e.key === 'Enter') equalFunction();
