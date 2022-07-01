@@ -24,6 +24,21 @@ numInput.forEach(buttonPress => {
     })
 })
 
+operateFunction = (value) => {
+    toggle = false;
+    dotToggle = true;
+    if (!operator && currentValue){
+        valueOne = currentValue;
+    } else if (valueOne && currentValue){
+        valueTwo = currentValue;
+        operate(operator, valueOne, valueTwo);
+        bottomTextBox.textContent = valueOne;
+    }                              // runs if no values were inputted after an operator was selector (changes the operator)
+    currentValue = '';
+    operator = value;
+    topTextBox.textContent = `${valueOne} ${operator}`;
+}
+
 function operate(operator, a, b){
     let aVal = Number(a);
     let bVal = Number(b);
@@ -69,50 +84,43 @@ const equalFunction = () => {
     }
 }
 
+const modifyFunction = (buttonID) => {
+    if (buttonID === 'backspace'){
+        currentValue = currentValue.slice(0, -1);
+    } else if (buttonID === 'clear'){
+        clearFunction();
+        return;
+    } else if (buttonID === 'plusMinus'){
+        if (!toggle){
+            currentValue = "-" + currentValue;
+            toggle = !toggle;
+        } else{
+            currentValue = currentValue.slice(1);
+            toggle = !toggle;
+        }
+    } else if (buttonID === '.' && dotToggle){            
+        dotToggle = false;
+        currentValue += ".";
+    } 
+    bottomTextBox.textContent = currentValue;
+}
+
 modifyInput.forEach(modifyPress => {
-    modifyPress.addEventListener('click', () => {
-        if (modifyPress.id === 'delete'){
-            currentValue = currentValue.slice(0, -1);
-        } else if (modifyPress.id === 'clear'){
-            clearFunction();
-            return;
-        } else if (modifyPress.id === 'plusMinus'){
-            if (!toggle){
-                currentValue = "-" + currentValue;
-                toggle = !toggle;
-            } else{
-                currentValue = currentValue.slice(1);
-                toggle = !toggle;
-            }
-        } else if (modifyPress.id === 'dot' && dotToggle){            
-            dotToggle = false;
-            currentValue += ".";
-        } 
-        bottomTextBox.textContent = currentValue;
-    })
+    modifyPress.addEventListener('click', () => modifyFunction(modifyPress.id))
 })
 
 funcInput.forEach(funcPress => {
     funcPress.addEventListener('click', () => {
-        toggle = false;
-        dotToggle = true;
-        if (!operator && currentValue){
-            valueOne = currentValue;
-        } else if (valueOne && currentValue){
-            valueTwo = currentValue;
-            operate(operator, valueOne, valueTwo);
-            bottomTextBox.textContent = valueOne;
-        }                              // runs if no values were inputted after an operator was selector (changes the operator)
-        currentValue = '';
-        operator = funcPress.id;
-        topTextBox.textContent = `${valueOne} ${operator}`;
+        operateFunction(funcPress.id);
     })
 })
 
 equalInput.addEventListener('click', equalFunction);
 
-body.addEventListener('keydown', (e) => {
+body.addEventListener('keydown', (e) => {                                           // add rest of keyboard support. update CSS. need to convert the other eventlisteners to individual functions
     console.log(e.key);
     if (e.key >= 0 && e.key <= 9) bottomDisplayFunc(e.key);
     if (e.key === '=' || e.key === 'Enter') equalFunction();
+    if (e.key === '-' || e.key === '+' || e.key === '/' || e.key === '*') (operateFunction(e.key));
+    if (e.key === 'backspace' || e.key === '.') (modifyFunction(e.key)); 
 })
